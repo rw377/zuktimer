@@ -14,5 +14,5 @@ https://zuktimer.pages.dev/
 
 ## Acknowledgements
 
- - [Inspriation taking from  InfernoTimer (site seems down at time of writing)](https://github.com/maxswa/inferno-timer)
+ - [Inspriation taken from  InfernoTimer (site is down at time of writing)](https://github.com/maxswa/inferno-timer)
 
