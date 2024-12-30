@@ -24,6 +24,18 @@
             font-size: 1.5rem;
             text-align: center;
         }
+        .checkbox-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid #000; /* Thin border around checkboxes */
+            padding: 10px;
+        }
+        .checkbox-container label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
         @keyframes flash {
             0%, 100% { background-color: lightcoral; }
             50% { background-color: white; }
@@ -35,8 +47,17 @@
     <div id="caption">Click to start timer when mage and range set appear</div>
 
     <audio id="countdown-sound">
-        <source src="https://www.soundjay.com/buttons/button-37a.mp3" type="audio/mp3">
+        <source src="chimeSound.mp3" type="audio/mp3">
     </audio>
+
+    <div class="checkbox-container" id="checkbox-area">
+        <label>
+            <input type="checkbox" id="disable-sound"> Disable countdown sound
+        </label>
+        <label>
+            <input type="checkbox" id="disable-flash"> Disable background flashing
+        </label>
+    </div>
 
     <script>
         let duration = 3 * 60 + 30; // 3 minutes and 30 seconds in seconds
@@ -44,6 +65,9 @@
         let interval = null;
         let clickCount = 0;
         const sound = document.getElementById('countdown-sound');
+        const disableSoundCheckbox = document.getElementById('disable-sound');
+        const disableFlashCheckbox = document.getElementById('disable-flash');
+        const checkboxArea = document.getElementById('checkbox-area');
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -61,8 +85,12 @@
 
                 // Flash and play sound in the last 5 seconds
                 if (timer <= 5 && timer > 0) {
-                    document.body.style.animation = "flash 0.5s infinite";
-                    sound.play();
+                    if (!disableFlashCheckbox.checked) {
+                        document.body.style.animation = "flash 0.5s infinite";
+                    }
+                    if (!disableSoundCheckbox.checked) {
+                        sound.play();
+                    }
                 } else if (timer === 0) {
                     document.body.style.animation = "none";
                     sound.pause();
@@ -81,7 +109,12 @@
             interval = null;
         }
 
-        function toggleTimer() {
+        function toggleTimer(event) {
+            // Ignore clicks within the checkbox container
+            if (checkboxArea.contains(event.target)) {
+                return;
+            }
+
             if (clickCount >= 3) {
                 // Disable further clicks after the third action
                 document.body.removeEventListener('click', toggleTimer);
