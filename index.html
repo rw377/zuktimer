@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: lightgreen; /* default light green background */
+            font-family: Arial, sans-serif;
+        }
+        #timer {
+            font-size: 5rem;
+            font-weight: bold;
+        }
+        #caption {
+            margin-top: 20px; 
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        @keyframes flash {
+            0%, 100% { background-color: lightcoral; }
+            50% { background-color: white; }
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">3:30</div>
+    <div id="caption">Click to start timer when mage and range set appear</div>
+
+    <audio id="countdown-sound">
+        <source src="https://www.soundjay.com/buttons/button-37a.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        let duration = 3 * 60 + 30; // 3 minutes and 30 seconds in seconds
+        let timer = duration;
+        let interval = null;
+        let clickCount = 0;
+        const sound = document.getElementById('countdown-sound');
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timer').textContent = formatTime(timer);
+        }
+
+        function startTimer() {
+            interval = setInterval(() => {
+                timer--;
+
+                // Flash and play sound in the last 5 seconds
+                if (timer <= 5 && timer > 0) {
+                    document.body.style.animation = "flash 0.5s infinite";
+                    sound.play();
+                } else if (timer === 0) {
+                    document.body.style.animation = "none";
+                    sound.pause();
+                    sound.currentTime = 0;
+                }
+
+                if (timer < 0) {
+                    timer = duration; // Reset the timer
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(interval);
+            interval = null;
+        }
+
+        function toggleTimer() {
+            if (clickCount >= 3) {
+                // Disable further clicks after the third action
+                document.body.removeEventListener('click', toggleTimer);
+                return;
+            }
+
+            if (interval) {
+                stopTimer();
+                timer += 1 * 60 + 45; // Add 1 minute and 45 seconds
+                if (clickCount === 0) {
+                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
+                } else if (clickCount === 1) {
+                    document.body.style.backgroundColor = "lightgrey"; // light grey background
+                    document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
+                } else if (clickCount === 2) {
+                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and sets will continue every 3:30";
+                }
+            } else {
+                startTimer();
+                if (clickCount === 0) {
+                    document.body.style.backgroundColor = "lightcoral"; // light red background
+                    document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
+                } else if (clickCount === 1) {
+                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
+                } else if (clickCount === 2) {
+                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and sets will continue every 3:30";
+                }
+            }
+
+            clickCount++;
+            updateTimerDisplay();
+        }
+
+        document.body.addEventListener('click', toggleTimer);
+
+        // Initialize the timer display
+        updateTimerDisplay();
+    </script>
+</body>
+</html>
