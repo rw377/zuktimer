@@ -6,3 +6,9 @@ Click anywhere on the page to start and pause the timer. After 3 clicks, the tim
 Note: The background will flash and beep sounds will play for the final 5 seconds of each timer. To disable either of these, click the appropriate boxes below the caption. Clicking anywhere in this square will not affect the timer.
 
 https://zuktimer.pages.dev/
+
+
+## Acknowledgements
+
+ - [Inspriation taking from  InfernoTimer (site seems down at time of writing)](https://github.com/maxswa/inferno-timer)
+
