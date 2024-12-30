@@ -15,6 +15,11 @@
             background-color: lightgreen; /* default light green background */
             font-family: Arial, sans-serif;
         }
+        #timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         #timer {
             font-size: 5rem;
             font-weight: bold;
@@ -23,6 +28,24 @@
             margin-top: 20px; 
             font-size: 1.5rem;
             text-align: center;
+        }
+        .adjust-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(192, 192, 192, 0.8); /* Transparent grey */
+            border: 1px solid #000;
+            font-size: 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .adjust-box:hover {
+            background-color: rgba(169, 169, 169, 0.9); /* Slightly darker on hover */
+            transform: scale(1.1);
         }
         .checkbox-container {
             margin-top: 20px;
@@ -36,6 +59,11 @@
             font-size: 1rem;
             margin-bottom: 5px;
         }
+        .adjust-box-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
         @keyframes flash {
             0%, 100% { background-color: lightcoral; }
             50% { background-color: white; }
@@ -43,7 +71,9 @@
     </style>
 </head>
 <body>
-    <div id="timer">3:30</div>
+    <div id="timer-container">
+        <div id="timer">3:30</div>
+    </div>
     <div id="caption">Click to start timer when mage and range set appear</div>
 
     <audio id="countdown-sound">
@@ -59,6 +89,11 @@
         </label>
     </div>
 
+    <div class="adjust-box-container">
+        <div class="adjust-box" id="add-five">+5</div>
+        <div class="adjust-box" id="subtract-five">-5</div>
+    </div>
+
     <script>
         let duration = 3 * 60 + 30; // 3 minutes and 30 seconds in seconds
         let timer = duration;
@@ -68,6 +103,8 @@
         const disableSoundCheckbox = document.getElementById('disable-sound');
         const disableFlashCheckbox = document.getElementById('disable-flash');
         const checkboxArea = document.getElementById('checkbox-area');
+        const addFiveButton = document.getElementById('add-five');
+        const subtractFiveButton = document.getElementById('subtract-five');
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -111,7 +148,7 @@
 
         function toggleTimer(event) {
             // Ignore clicks within the checkbox container
-            if (checkboxArea.contains(event.target)) {
+            if (checkboxArea.contains(event.target) || event.target.classList.contains('adjust-box')) {
                 return;
             }
 
@@ -151,6 +188,15 @@
             clickCount++;
             updateTimerDisplay();
         }
+
+        function adjustTimer(seconds) {
+            timer += seconds;
+            if (timer < 0) timer = 0; // Prevent negative timer
+            updateTimerDisplay();
+        }
+
+        addFiveButton.addEventListener('click', () => adjustTimer(5));
+        subtractFiveButton.addEventListener('click', () => adjustTimer(-5));
 
         document.body.addEventListener('click', toggleTimer);
 
