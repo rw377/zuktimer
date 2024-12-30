@@ -1,6 +1,8 @@
 # Zuk Timer
-This is a website created to be utilized for Oldschool Runescape's TzKal-Zuk fight within the Inferno. 
+This is a website to be utilized as a helper for Oldschool Runescape's TzKal-Zuk fight within the Inferno. 
 
-Click anywhere on the page to start and pause the timer. After 3 clicks, the timer continues as expected but the clicking is disabled to prevent misclicks. To restart the timer, simply refresh the page. There is also a 5 second beep countdown for each timer. To disable this, mute the site in your web browser (in Chrome, right click the tab > Mute Site).
+Click anywhere on the page to start and pause the timer. After 3 clicks, the timer continues as expected but further clicking is disabled to prevent misclicks. To restart the timer, simply refresh the page. 
+
+Note: The background will flash and beep sounds will play for the final 5 seconds of each timer. To disable either of these, click the appropriate boxes below the caption. Clicking anywhere in this square will not affect the timer.
 
 https://zuktimer.pages.dev/
