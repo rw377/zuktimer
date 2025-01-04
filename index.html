@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" href="favicon.ico">
     <title>Zuk Timer</title>
+    <link rel="icon" href="favicon.ico">
     <style>
         body {
             display: flex;
@@ -55,6 +55,8 @@
             align-items: flex-start;
             border: 1px solid #000; /* Thin border around checkboxes */
             padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Light transparent background */
+            border-radius: 5px;
         }
         .checkbox-container label {
             font-size: 1rem;
@@ -64,6 +66,15 @@
             margin-top: 10px;
             display: flex;
             gap: 10px;
+        }
+        .slider-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .slider-container label {
+            font-size: 1rem;
         }
         @keyframes flash {
             0%, 100% { background-color: rgba(0, 0, 139, 0.7); } /* Darker blue */
@@ -77,17 +88,22 @@
     </div>
     <div id="caption">Click to start timer when mage and range set appear</div>
 
-    <audio id="countdown-sound">
-        <source src="chimeSound.mp3" type="audio/mp3">
-    </audio>
+    <audio id="countdown-sound" src="chimeSound.mp3"></audio>
 
     <div class="checkbox-container" id="checkbox-area">
         <label>
-            <input type="checkbox" id="disable-sound"> Disable countdown sound
+            <input type="checkbox" id="dark-mode"> Enable Dark Mode
         </label>
         <label>
-            <input type="checkbox" id="disable-flash"> Disable background flashing
+            <input type="checkbox" id="disable-flash"> Disable Flashing
         </label>
+        <label>
+            <input type="checkbox" id="disable-sound"> Disable Sound
+        </label>
+        <div class="slider-container">
+            <label for="volume-slider">Volume:</label>
+            <input type="range" id="volume-slider" min="0" max="100" value="50">
+        </div>
     </div>
 
     <div class="adjust-box-container">
@@ -103,9 +119,19 @@
         const sound = document.getElementById('countdown-sound');
         const disableSoundCheckbox = document.getElementById('disable-sound');
         const disableFlashCheckbox = document.getElementById('disable-flash');
+        const darkModeCheckbox = document.getElementById('dark-mode');
+        const volumeSlider = document.getElementById('volume-slider');
         const checkboxArea = document.getElementById('checkbox-area');
         const addFiveButton = document.getElementById('add-five');
         const subtractFiveButton = document.getElementById('subtract-five');
+
+        // Initialize volume
+        sound.volume = volumeSlider.value / 100;
+
+        // Update volume on slider change
+        volumeSlider.addEventListener('input', () => {
+            sound.volume = volumeSlider.value / 100;
+        });
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -123,7 +149,7 @@
 
                 // Flash and play sound in the last 3 seconds
                 if (timer <= 3 && timer > 0) {
-                    if (!disableFlashCheckbox.checked) {
+                    if (!disableFlashCheckbox.checked && !darkModeCheckbox.checked) {
                         document.body.style.animation = "flash 1s infinite"; /* Adjusted delay for less intensity */
                     }
                     if (!disableSoundCheckbox.checked) {
@@ -163,25 +189,25 @@
                 stopTimer();
                 timer += 1 * 60 + 45; // Add 1 minute and 45 seconds
                 if (clickCount === 0) {
-                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightblue"; // light blue background
                     document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
                 } else if (clickCount === 1) {
-                    document.body.style.backgroundColor = "lightgrey"; // light grey background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightgrey"; // light grey background
                     document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
                 } else if (clickCount === 2) {
-                    document.body.style.backgroundColor = "rgba(0, 0, 139, 0.7)"; // Darker blue background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "rgba(0, 0, 139, 0.7)"; // Darker blue background
                     document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and mage and range sets will continue every 3:30 once this timer finishes";
                 }
             } else {
                 startTimer();
                 if (clickCount === 0) {
-                    document.body.style.backgroundColor = "lightcoral"; // light red background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightcoral"; // light red background
                     document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
                 } else if (clickCount === 1) {
-                    document.body.style.backgroundColor = "lightblue"; // light blue background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightblue"; // light blue background
                     document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
                 } else if (clickCount === 2) {
-                    document.body.style.backgroundColor = "rgba(39, 122, 216, 0.8)"; // Darker blue background
+                    document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "rgba(0, 0, 139, 0.7)"; // Darker blue background
                     document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and mage and range sets will continue every 3:30 once this timer finishes";
                 }
             }
@@ -195,6 +221,18 @@
             if (timer < 0) timer = 0; // Prevent negative timer
             updateTimerDisplay();
         }
+
+        // Enable dark mode
+        darkModeCheckbox.addEventListener('change', () => {
+            if (darkModeCheckbox.checked) {
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+                document.body.style.animation = "none";
+            } else {
+                document.body.style.backgroundColor = "lightgreen";
+                document.body.style.color = "black";
+            }
+        });
 
         addFiveButton.addEventListener('click', () => adjustTimer(5));
         subtractFiveButton.addEventListener('click', () => adjustTimer(-5));
