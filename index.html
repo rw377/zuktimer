@@ -13,7 +13,7 @@
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            background-color: lightgreen; /* default light green background */
+            background-color: darkseagreen; /* default light green background */
             font-family: Arial, sans-serif;
         }
         #timer-container {
@@ -193,7 +193,7 @@
                     document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
                 } else if (clickCount === 1) {
                     document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightgrey"; // light grey background
-                    document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
+                    document.getElementById('caption').textContent = "Click when Jad spawns (at 480 Zuk HP) to start timer again";
                 } else if (clickCount === 2) {
                     document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "rgba(0, 0, 139, 0.7)"; // Darker blue background
                     document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and mage and range sets will continue every 3:30 once this timer finishes";
@@ -205,7 +205,7 @@
                     document.getElementById('caption').textContent = "Click again when Zuk is under 600 HP to pause the timer";
                 } else if (clickCount === 1) {
                     document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "lightblue"; // light blue background
-                    document.getElementById('caption').textContent = "Click when Jad spawns to start timer again";
+                    document.getElementById('caption').textContent = "Click when Jad spawns (at 480 Zuk HP) to start timer again";
                 } else if (clickCount === 2) {
                     document.body.style.backgroundColor = darkModeCheckbox.checked ? "black" : "rgba(0, 0, 139, 0.7)"; // Darker blue background
                     document.getElementById('caption').textContent = "Good luck. Healers appear at 240 HP and mage and range sets will continue every 3:30 once this timer finishes";
@@ -229,7 +229,7 @@
                 document.body.style.color = "white";
                 document.body.style.animation = "none";
             } else {
-                document.body.style.backgroundColor = "lightgreen";
+                document.body.style.backgroundColor = "darkseagreen";
                 document.body.style.color = "black";
             }
         });
