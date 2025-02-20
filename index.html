@@ -80,9 +80,37 @@
             0%, 100% { background-color: rgba(0, 0, 139, 0.7); } /* Darker blue */
             50% { background-color: white; }
         }
+		
+		        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 0;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 2em;
+            transition: color 0.3s;
+        }
+        .footer a:hover {
+            color: #ffcc00;
+        }
+		
+		
+		
     </style>
 </head>
 <body>
+
+
+
+
     <div id="timer-container">
         <div id="timer">3:30</div>
     </div>
@@ -124,6 +152,13 @@
         const checkboxArea = document.getElementById('checkbox-area');
         const addFiveButton = document.getElementById('add-five');
         const subtractFiveButton = document.getElementById('subtract-five');
+
+		disableFlashCheckbox.addEventListener('change', () => {
+    if (disableFlashCheckbox.checked) {
+        document.body.style.animation = 'none';
+    }
+	});
+
 
         // Initialize volume
         sound.volume = volumeSlider.value / 100;
@@ -242,5 +277,20 @@
         // Initialize the timer display
         updateTimerDisplay();
     </script>
+	
+	
+	
+	
+	
+	
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+    <div class="footer">
+        <a href="https://github.com/rw377/zuktimer" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.buymeacoffee.com/rw377" target="_blank" title="Buy Me a Coffee"><i class="fas fa-coffee"></i></a>
+    </div>
+	
+	
 </body>
 </html>
+
+
